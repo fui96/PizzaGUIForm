@@ -3,7 +3,6 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class PizzaGUIFrame extends JFrame {
@@ -11,7 +10,7 @@ public class PizzaGUIFrame extends JFrame {
     Dimension screenSize = tk.getScreenSize();
 
     //Panels
-    JPanel MainPanel,SizePanel,CrustPanel,ToppingPanel,OrderPanel,BottomPanel;
+    JPanel MainPanel,SizePanel,CrustPanel,ToppingPanel,OrderPanel,BottomPanel,BottomButtonPanel;
     //Button Groups
     ButtonGroup CrustButtonGroup;
     //ComboBox
@@ -35,28 +34,30 @@ public class PizzaGUIFrame extends JFrame {
         setTitle("Pizza Order");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-        int Width = (int) (screenSize.width * .35);
+        int Width = (int) (screenSize.width * .7);
         int Height = (int) (screenSize.height * .8);
         setSize(Width, Height);
         setLocationRelativeTo(null);
         MainPanel = new JPanel();
-        MainPanel.setLayout(new GridLayout(5,1));
+        MainPanel.setLayout(new BorderLayout());
 
         add(MainPanel, BorderLayout.CENTER);
 
         CreateSizePanel();
-        MainPanel.add(SizePanel);
+        MainPanel.add(SizePanel,BorderLayout.NORTH);
 
         CreateCrustPanel();
-        MainPanel.add(CrustPanel);
+        MainPanel.add(CrustPanel,BorderLayout.WEST);
 
         CreatToppingsPanel();
-        MainPanel.add(ToppingPanel);
+        MainPanel.add(ToppingPanel, BorderLayout.CENTER);
 
         CreateOrderPanel();
-        MainPanel.add(OrderPanel);
-
-        CreateBottomPanel();
+        CreateBottomButtonPanel();
+        BottomPanel = new JPanel();
+        BottomPanel.setLayout(new BorderLayout());
+        BottomPanel.add(BottomButtonPanel, BorderLayout.SOUTH);
+        BottomPanel.add(OrderPanel,BorderLayout.NORTH);
         MainPanel.add(BottomPanel,BorderLayout.SOUTH);
 
         setVisible(true);
@@ -155,7 +156,7 @@ public class PizzaGUIFrame extends JFrame {
         OrderPanel.setBorder(new TitledBorder(new EtchedBorder(), " Order"));
         OrderPanel.setLayout(new GridLayout(1,1));
 
-        OrderTextArea = new JTextArea();
+        OrderTextArea = new JTextArea(15,10);
         OrderTextArea.setEditable(false);
         OrderTextArea.setLineWrap(true);
 
@@ -164,10 +165,10 @@ public class PizzaGUIFrame extends JFrame {
         OrderPanel.add(OrderScrollPane);
     }
 
-    public void CreateBottomPanel(){
-        BottomPanel = new JPanel();
-        BottomPanel.setBorder(new TitledBorder(new EtchedBorder(), "Order Management"));
-        BottomPanel.setLayout(new GridLayout(1,3));
+    public void CreateBottomButtonPanel(){
+        BottomButtonPanel = new JPanel();
+        BottomButtonPanel.setBorder(new TitledBorder(new EtchedBorder(), "Order Management"));
+        BottomButtonPanel.setLayout(new GridLayout(1,3));
 
         OrderButton = new JButton("Order");
         QuitButton = new JButton("Quit");
@@ -196,6 +197,11 @@ public class PizzaGUIFrame extends JFrame {
             OlivesCB.setSelected(false);
             //Reset ComboBox
             PizzaSizeComboBox.setSelectedIndex(0);
+            //ButtonGroupReset
+            CrustButtonGroup.clearSelection();
+            //Clear Variables
+            Crust = "";
+            Size = "";
 
         });
         OrderButton.addActionListener((ActionEvent ae) -> {
@@ -210,9 +216,9 @@ public class PizzaGUIFrame extends JFrame {
 
             }
         });
-        BottomPanel.add(OrderButton);
-        BottomPanel.add(QuitButton);
-        BottomPanel.add(ClearButton);
+        BottomButtonPanel.add(OrderButton);
+        BottomButtonPanel.add(QuitButton);
+        BottomButtonPanel.add(ClearButton);
     }
 
     public void ToppingButtonAction(ActionEvent ae){
