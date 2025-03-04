@@ -40,7 +40,46 @@ public class PizzaObject {
     }
     //Other Methods
     public String DisplayPizza(){
-        return null;
+        double Total, Subtotal, SalesTax;
+        int ToppingCost;
+        double SizeCost = 0;
+        switch(Size){
+            case "Small":
+                SizeCost = 8;
+                break;
+            case "Medium":
+                SizeCost = 12;
+                break;
+            case "Large":
+                SizeCost = 16;
+                break;
+            case "Super":
+                SizeCost = 20;
+                break;
+            default:
+                SizeCost = 8;
+        }
+        ToppingCost = Toppings.size();
+        Subtotal = SizeCost + ToppingCost;
+        SalesTax = Subtotal * 0.07;
+        Total = Subtotal + SalesTax;
+        StringBuilder Receipt = new StringBuilder();
+        Receipt.append("------------ PIZZA ORDER RECEIPT ------------\n");
+        Receipt.append(String.format("%-5s %10s %15.2f\n",Size,Crust,SizeCost));
+        Receipt.append("Toppings:\n");
+        if(!Toppings.isEmpty()){
+            for(String topping : Toppings){
+                Receipt.append(String.format("%-10s %1.2f\n",topping,1.00));
+            }
+        }
+        else{
+            Receipt.append("No toppings found\n");
+        }
+        Receipt.append(String.format("%-10s %1.2f\n","Subtotal:",Subtotal));
+        Receipt.append(String.format("%-10s %1.2f\n","SalesTax:",SalesTax));
+        Receipt.append(String.format("%-10s %1.2f\n","Total:",Total));
+
+        return Receipt.toString();
     }
 
 }
